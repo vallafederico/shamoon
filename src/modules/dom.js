@@ -1,12 +1,16 @@
-import { Text } from "./animation/text";
+// import { Text } from "./animation/text";
 // import { Track } from "../util/track";
 // import { Alpha } from "./animation/alpha";
 
 import { CmsMenu } from "./cms-menu.js";
+import { Preloader } from "./preloader.js";
 
 export class Dom {
   constructor() {
     this.create();
+
+    if (document.querySelector("[data-loader]"))
+      this.preloader = new Preloader();
   }
 
   resize() {}
