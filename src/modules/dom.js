@@ -2,6 +2,8 @@ import { Text } from "./animation/text";
 // import { Track } from "../util/track";
 // import { Alpha } from "./animation/alpha";
 
+import { CmsMenu } from "./cms-menu.js";
+
 export class Dom {
   constructor() {
     this.create();
@@ -14,27 +16,23 @@ export class Dom {
   }
 
   create() {
-    this.texts = [
-      ...document.querySelectorAll(
-        '[data-a="char"],[data-a="word"],[data-a="line"]'
-      ),
-    ].map((el) => new Text({ element: el }));
+    if (document.querySelector("[data-pmenu]")) {
+      this.cmsMenu = new CmsMenu();
+    } else this.cmsMenu = null;
 
+    // start
     this.start();
   }
 
-  start() {
-    this.texts?.forEach((text) => text.start());
-    this.alpha?.start();
-    this.track?.start();
-  }
+  start() {}
 
   destroy() {
-    this.texts.forEach((text) => text.animateOut());
+    this.cmsMenu?.destroy();
   }
 
   /* --  Pages */
   transitionOut(page) {
+    this.destroy();
     // console.log("DOM::transitionOut", page);
 
     return new Promise((resolve) => {
@@ -45,6 +43,7 @@ export class Dom {
   }
 
   transitionIn(page) {
+    this.create();
     // console.log("DOM::transitionIn", page);
 
     return new Promise((resolve) => {

@@ -80,93 +80,6 @@
 
   // src/util/observe.js
   var import_tiny_emitter = __toESM(require_tiny_emitter(), 1);
-  var Observe = class extends import_tiny_emitter.default {
-    /**
-     * Creates an instance of Observe.
-     * @param {Object} options - The options object.
-     * @param {HTMLElement} options.element - The element to observe.
-     * @param {Object} [options.config] - The IntersectionObserver configuration options.
-     * @param {HTMLElement} [options.config.root=null] - The element that is used as the viewport for checking visibility of the target.
-     * @param {string} [options.config.margin='10px'] - Margin around the root element.
-     * @param {number} [options.config.threshold=0] - A threshold of 0.0 means that the target will be visible when it intersects with the root element.
-     * @param {boolean} [options.config.autoStart=false] - Whether to start observing the element automatically.
-     * @param {string} [options.addClass] - The CSS class to add to the element when it is in view.
-     * @param {Object} [options.cb] - The callback functions to execute when the element is in or out of view.
-     * @param {Function} [options.cb.in] - The function to execute when the element is in view.
-     * @param {Function} [options.cb.out] - The function to execute when the element is out of view.
-     */
-    constructor({ element, config: config3, addClass, cb }) {
-      super();
-      this.element = element;
-      this.config = {
-        root: config3?.root || null,
-        margin: config3?.margin || "10px",
-        threshold: config3?.threshold || 0,
-        autoStart: config3?.autoStart || false
-      };
-      if (cb)
-        this.cb = cb;
-      if (addClass !== void 0)
-        this.addClass = addClass;
-      this.init();
-      if (this.config.autoStart)
-        this.start();
-    }
-    init() {
-      this.in = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              this.isIn();
-            }
-          });
-        },
-        {
-          root: this.config.root,
-          rootMargin: this.config.margin,
-          threshold: this.config.threshold
-        }
-      );
-      this.out = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) {
-              this.isOut();
-            }
-          });
-        },
-        {
-          root: this.config.root,
-          rootMargin: "0px",
-          threshold: 0
-        }
-      );
-    }
-    start() {
-      this.in.observe(this.element);
-      this.out.observe(this.element);
-    }
-    stop() {
-      this.in.unobserve(this.element);
-      this.out.unobserve(this.element);
-      this.off("IN");
-      this.off("OUT");
-    }
-    isIn() {
-      this.emit("IN");
-      if (this.cb?.in)
-        this.cb.in();
-      if (this.addClass)
-        this.element.classList.add(this.addClass);
-    }
-    isOut() {
-      this.emit("OUT");
-      if (this.cb?.out)
-        this.cb.out();
-      if (this.addClass)
-        this.element.classList.remove(this.addClass);
-    }
-  };
 
   // node_modules/.pnpm/@gsap+shockingly@3.12.2/node_modules/@gsap/shockingly/gsap-core.js
   function _assertThisInitialized(self) {
@@ -4817,128 +4730,32 @@
 
   // src/modules/animation/text.js
   gsapWithCSS.registerPlugin(SplitText);
-  var Text = class extends Observe {
-    constructor({ element, anim, params, once = false }) {
-      super({
-        element,
-        config: {
-          root: null,
-          margin: "0px",
-          threshold: 0.5,
-          autoStart: false
-        },
-        addClass: "active"
-      });
-      this.anim = {
-        d: 1.2,
-        ease: "expo.out",
-        delay: 0.1,
-        stagger: {
-          each: 0.05,
-          from: "start"
-        },
-        ...anim
-      };
-      this.params = {
-        in: {
-          y: "0%"
-        },
-        out: {
-          y: "150%"
-        },
-        ...params
-      };
-      this.once = once;
-      if (element.dataset.a === "lines")
-        this.revertTo = this.element.textContent;
-      this.create(element);
-      this.setOut();
-    }
-    create(element) {
-      this.element = element;
-      this.animated = returnSplit(this.element);
-    }
-    resize() {
-      if (!this.revertTo)
-        return;
-      this.element.textContent = this.revertTo;
+
+  // src/modules/cms-menu.js
+  var CmsMenu = class {
+    triggers = [...document.querySelector("[data-pmenu=trigger]").children];
+    items = [...document.querySelector("[data-pmenu=item]").children];
+    current = null;
+    constructor() {
       this.create();
-      this.animateIn();
     }
-    isIn() {
-      this.animateIn();
-      if (this.anim.once)
-        this.stop();
+    create() {
+      this.triggers.forEach((item, i) => item.onclick = () => this.toggle(i));
     }
-    isOut() {
-      this.setOut();
+    destroy() {
+      this.triggers.onclick = () => null;
     }
-    animateIn() {
-      if (this.animation)
-        this.animation.kill();
-      this.animation = gsapWithCSS.to(this.animated, {
-        ...this.params.in,
-        ...this.anim
-      });
-    }
-    animateOut() {
-      this.stop();
-      if (this.animation)
-        this.animation.kill();
-      this.animation = gsapWithCSS.to(this.animated, {
-        ...this.params.in,
-        ...this.anim,
-        delay: 0
-      });
-    }
-    setIn() {
-      if (this.animation)
-        this.animation.kill();
-      gsapWithCSS.set(this.animated, { ...this.params.in });
-    }
-    setOut() {
-      if (this.animation)
-        this.animation.kill();
-      gsapWithCSS.set(this.animated, { ...this.params.out });
+    /** Events */
+    toggle(i) {
+      if (this.current === i)
+        return;
+      if (this.current !== null) {
+        this.items[this.current].style.display = "none";
+      }
+      this.current = i;
+      this.items[i].style.display = "block";
     }
   };
-  function returnSplit(element) {
-    switch (element.dataset.a) {
-      case "char":
-        return splitChar(element);
-        break;
-      case "word":
-        return splitWord(element);
-        break;
-      case "line":
-        return splitLine(element);
-        break;
-      default:
-        return splitChar(element);
-    }
-  }
-  function splitChar(el) {
-    return new SplitText(splitLine(el), {
-      type: "chars"
-    }).chars;
-  }
-  function splitWord(el) {
-    return new SplitText(splitLine(el), {
-      type: "words"
-    }).words;
-  }
-  function splitLine(el) {
-    const split = new SplitText(el, {
-      type: "lines"
-    });
-    split.lines.forEach((line) => wrapEl(line));
-    return split.lines;
-  }
-  function wrapEl(el) {
-    const wrapper = document.createElement("div");
-    el.parentNode.insertBefore(wrapper, el);
-    wrapper.appendChild(el);
-  }
 
   // src/modules/dom.js
   var Dom = class {
@@ -4950,23 +4767,20 @@
     render(t) {
     }
     create() {
-      this.texts = [
-        ...document.querySelectorAll(
-          '[data-a="char"],[data-a="word"],[data-a="line"]'
-        )
-      ].map((el) => new Text({ element: el }));
+      if (document.querySelector("[data-pmenu]")) {
+        this.cmsMenu = new CmsMenu();
+      } else
+        this.cmsMenu = null;
       this.start();
     }
     start() {
-      this.texts?.forEach((text) => text.start());
-      this.alpha?.start();
-      this.track?.start();
     }
     destroy() {
-      this.texts.forEach((text) => text.animateOut());
+      this.cmsMenu?.destroy();
     }
     /* --  Pages */
     transitionOut(page) {
+      this.destroy();
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve();
@@ -4974,6 +4788,7 @@
       });
     }
     transitionIn(page) {
+      this.create();
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve();
