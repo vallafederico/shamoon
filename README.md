@@ -7,22 +7,24 @@ Not sure it's needed should just use VITE
 - [x] **Project Menu**
 
 - [ ] **System Settings**
-      data-settings [wrapper]
+- [ ] image upload
+- [ ] font switcher
 
 - [x] **Services Links**
 
-  - [x] **Nav**
+- [x] **Nav**
 
 ## Todos
 
-- [ ] Menu States
+- [x] Menu States
 
 - [ ] Hovers
 
 - [ ] Mobile Things
 
-- [ ] Bottom Bar
+- [ ] Mobile Menu
+
+- [ ] Bottom Bar (mobile)
+- [ ] Bottom Bar (functionality)
 
 - [x] _Preloader_
-      data-loader="w"
-      data-loader="bar"
