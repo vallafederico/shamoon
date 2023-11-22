@@ -24,7 +24,8 @@ Not sure it's needed should just use VITE
 
 - [ ] Mobile Menu
 
+- [x] _Preloader_
+
+- [ ] _Bottom Bar_
 - [ ] Bottom Bar (mobile)
 - [ ] Bottom Bar (functionality)
-
-- [x] _Preloader_
