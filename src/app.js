@@ -12,6 +12,18 @@ class App {
 
     this.time = 0;
 
+    // watch out the thing is resetting the defaults everytime you come back to the page
+    const ex = getComputedStyle(document.documentElement);
+    window.defaults = {
+      colors: [
+        ex.getPropertyValue("--col--blue"),
+        ex.getPropertyValue("--col--darkblue"),
+        ex.getPropertyValue("--col--green"),
+        ex.getPropertyValue("--col--white"),
+      ],
+      systemSlider: [0, 0, 0, 0],
+    };
+
     this.init();
   }
 

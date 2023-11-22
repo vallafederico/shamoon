@@ -1,16 +1,23 @@
-// import { Text } from "./animation/text";
-// import { Track } from "../util/track";
 // import { Alpha } from "./animation/alpha";
 
 import { CmsMenu } from "./cms-menu.js";
+import { Cdd } from "./cdd.js";
+import { Nav } from "./nav.js";
+import { System } from "./system.js";
+import { Services } from "./services.js";
 import { Preloader } from "./preloader.js";
 
 export class Dom {
   constructor() {
-    this.create();
+    this.wrap = document.querySelector("[data-taxi]");
 
+    this.nav = new Nav(document.querySelector("[data-cdnav]"));
+
+    // console.log(document.querySelector("[data-loader]"));
     if (document.querySelector("[data-loader]"))
       this.preloader = new Preloader();
+
+    this.create();
   }
 
   resize() {}
@@ -20,9 +27,24 @@ export class Dom {
   }
 
   create() {
-    if (document.querySelector("[data-pmenu]")) {
+    if (this.wrap.querySelector("[data-pmenu]")) {
       this.cmsMenu = new CmsMenu();
     } else this.cmsMenu = null;
+
+    if (this.wrap.querySelector("[data-serv]")) {
+      this.services = new Services();
+    } else this.services = null;
+
+    if (this.wrap.querySelector("[data-cdd]")) {
+      this.cdds = [...this.wrap.querySelectorAll("[data-cdd]")].map((el) => {
+        console.log(el);
+        return new Cdd(el);
+      });
+    } else this.cdds = null;
+
+    if (this.wrap.querySelector("[data-system]")) {
+      this.system = new System(this.wrap.querySelector("[data-system]"));
+    } else this.system = null;
 
     // start
     this.start();
@@ -32,6 +54,11 @@ export class Dom {
 
   destroy() {
     this.cmsMenu?.destroy();
+    this.services?.destroy();
+    this.system?.destroy();
+    this.cdds?.forEach((cdd) => {
+      cdd.destroy();
+    });
   }
 
   /* --  Pages */

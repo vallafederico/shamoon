@@ -4,11 +4,14 @@ Not sure it's needed should just use VITE
 
 ## Custom Components
 
-- [x] _Project Menu_
-      data-pmenu="trigger" [wrapper]
-      data-pmenu="item" [wrapper] (starts hidden)
+- [x] **Project Menu**
 
-- [ ] _System Settings_
+- [ ] **System Settings**
+      data-settings [wrapper]
+
+- [x] **Services Links**
+
+  - [x] **Nav**
 
 ## Todos
 
