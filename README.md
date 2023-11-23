@@ -14,6 +14,8 @@ Not sure it's needed should just use VITE
 
 - [x] **Nav**
 
+- [x] **Clock**
+
 ## Todos
 
 - [x] Menu States

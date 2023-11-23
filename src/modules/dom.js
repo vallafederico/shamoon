@@ -1,22 +1,23 @@
 // import { Alpha } from "./animation/alpha";
 
+import { Nav } from "./nav.js";
+import { Preloader } from "./preloader.js";
+import { Clock } from "./clock.js";
+
 import { CmsMenu } from "./cms-menu.js";
 import { Cdd } from "./cdd.js";
-import { Nav } from "./nav.js";
 import { System } from "./system.js";
 import { Services } from "./services.js";
-import { Preloader } from "./preloader.js";
 
 export class Dom {
   constructor() {
     this.wrap = document.querySelector("[data-taxi]");
 
-    this.nav = new Nav(document.querySelector("[data-cdnav]"));
-
     // console.log(document.querySelector("[data-loader]"));
     if (document.querySelector("[data-loader]"))
       this.preloader = new Preloader();
 
+    this.createOnce();
     this.create();
   }
 
@@ -24,6 +25,11 @@ export class Dom {
 
   render(t) {
     // this.track?.render();
+  }
+
+  createOnce() {
+    this.nav = new Nav(document.querySelector("[data-cdnav]"));
+    this.clock = new Clock();
   }
 
   create() {

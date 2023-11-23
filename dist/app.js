@@ -1,4 +1,62 @@
 (() => {
+  // src/modules/cdd.js
+  var Cdd = class {
+    current = null;
+    constructor(element) {
+      this.element = element;
+      this.triggers = [...this.element.querySelectorAll(".cdd-trig")];
+      this.drops = [...this.element.querySelectorAll(".cdd-drop-w")];
+      this.icons = [...this.element.querySelectorAll(".dd-icon")];
+      this.create();
+    }
+    create() {
+      this.triggers.forEach((trig, i) => {
+        trig.addEventListener("click", (e) => this.toggle(i));
+      });
+    }
+    toggle(i) {
+      if (this.drops[i].style.display == "block") {
+        this.drops[i].style.display = "none";
+        this.icons[i].querySelector("#arrow").style.display = "none";
+        this.icons[i].querySelector("#plus").style.display = "block";
+      } else {
+        this.drops[i].style.display = "block";
+        this.icons[i].querySelector("#arrow").style.display = "block";
+        this.icons[i].querySelector("#plus").style.display = "none";
+      }
+    }
+    destroy() {
+      this.triggers.forEach((trig) => {
+        trig.removeEventListener("click", this.toggle);
+      });
+    }
+  };
+
+  // src/modules/nav.js
+  var Nav = class extends Cdd {
+    current = null;
+    constructor(element) {
+      super(element);
+      this.links = [...this.element.querySelectorAll(".cdd-link")];
+      this.links.forEach((link, i) => {
+        if (link.classList.contains("current"))
+          link.classList.remove("current");
+      });
+      this.addEvents();
+    }
+    addEvents() {
+      this.links.forEach((link, i) => {
+        link.addEventListener("click", (e) => this.setCurrent(i));
+      });
+    }
+    setCurrent(i) {
+      if (this.current !== null)
+        this.links[this.current].classList.remove("current");
+      this.current = i;
+      this.links[this.current].classList.add("current");
+    }
+  };
+
   // node_modules/.pnpm/@gsap+shockingly@3.12.2/node_modules/@gsap/shockingly/gsap-core.js
   function _assertThisInitialized(self) {
     if (self === void 0) {
@@ -4224,6 +4282,98 @@
   var gsapWithCSS = gsap.registerPlugin(CSSPlugin) || gsap;
   var TweenMaxWithCSS = gsapWithCSS.core.Tween;
 
+  // src/modules/preloader.js
+  var Preloader = class {
+    wrapper = document.querySelector('[data-loader="w"]');
+    bar = [...document.querySelector('[data-loader="bar"]').children];
+    constructor() {
+      this.current = 0;
+      console.log("preloadr");
+      this.run();
+    }
+    run() {
+      this.interval = setInterval(() => {
+        this.current++;
+        if (this.current > this.bar.length - 1) {
+          this.kill();
+          return;
+        }
+        this.bar[this.current].classList.add("loaded");
+      }, 100);
+    }
+    kill() {
+      clearInterval(this.interval);
+      gsapWithCSS.to(this.wrapper, {
+        autoAlpha: 0,
+        duration: 0.2,
+        onComplete: () => {
+          this.wrapper.remove();
+        }
+      });
+    }
+  };
+
+  // src/modules/clock.js
+  var Clock = class {
+    constructor() {
+      this.svg = document.querySelector("[data-svg='clock']");
+      this.hours = this.svg.querySelector("#hours");
+      this.min = this.svg.querySelector("#min");
+      this.texts = {
+        date: document.querySelector("[data-clock='date']"),
+        time: document.querySelector("[data-clock='time']"),
+        loc: document.querySelector("[data-clock='loc']")
+      };
+      this.hours.style.transformOrigin = "center";
+      this.min.style.transformOrigin = "center";
+      this.setInitial();
+    }
+    create() {
+    }
+    setInitial() {
+      const date = /* @__PURE__ */ new Date();
+      const hours = date.getHours();
+      const min = date.getMinutes();
+      this.animateTo(hours, min);
+      const options = {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+        // timeZone: "America/New_York",
+      };
+      this.texts.loc.textContent = "Location";
+      const formattedDate = date.toLocaleDateString(void 0, options);
+      this.animateText(formattedDate);
+      setInterval(() => {
+        const date2 = /* @__PURE__ */ new Date();
+        const hours2 = date2.getHours();
+        const min2 = date2.getMinutes();
+        this.animateTo(hours2, min2);
+      }, 1e3 * 60);
+    }
+    animateText(date) {
+      this.texts.date.textContent = date;
+      this.texts.time.textContent = "14:00";
+    }
+    animateTo(hours, min) {
+      gsapWithCSS.to(this.hours, {
+        duration: 0.5,
+        transformOrigin: "bottom",
+        rotation: 180 + hours * 30 + min * 0.5,
+        ease: "power2.out"
+      });
+      gsapWithCSS.to(this.min, {
+        duration: 0.5,
+        transformOrigin: "bottom",
+        rotation: 180 + min * 6,
+        ease: "power2.out"
+      });
+    }
+    render() {
+    }
+  };
+
   // src/modules/cms-menu.js
   var CmsMenu = class {
     triggers = [...document.querySelector("[data-pmenu=trigger]").children];
@@ -4247,64 +4397,6 @@
       }
       this.current = i;
       this.items[i].style.display = "block";
-    }
-  };
-
-  // src/modules/cdd.js
-  var Cdd = class {
-    current = null;
-    constructor(element) {
-      this.element = element;
-      this.triggers = [...this.element.querySelectorAll(".cdd-trig")];
-      this.drops = [...this.element.querySelectorAll(".cdd-drop-w")];
-      this.icons = [...this.element.querySelectorAll(".dd-icon")];
-      this.create();
-    }
-    create() {
-      this.triggers.forEach((trig, i) => {
-        trig.addEventListener("click", (e) => this.toggle(i));
-      });
-    }
-    toggle(i) {
-      if (this.drops[i].style.display == "block") {
-        this.drops[i].style.display = "none";
-        this.icons[i].querySelector("#arrow").style.display = "none";
-        this.icons[i].querySelector("#plus").style.display = "block";
-      } else {
-        this.drops[i].style.display = "block";
-        this.icons[i].querySelector("#arrow").style.display = "block";
-        this.icons[i].querySelector("#plus").style.display = "none";
-      }
-    }
-    destroy() {
-      this.triggers.forEach((trig) => {
-        trig.removeEventListener("click", this.toggle);
-      });
-    }
-  };
-
-  // src/modules/nav.js
-  var Nav = class extends Cdd {
-    current = null;
-    constructor(element) {
-      super(element);
-      this.links = [...this.element.querySelectorAll(".cdd-link")];
-      this.links.forEach((link, i) => {
-        if (link.classList.contains("current"))
-          link.classList.remove("current");
-      });
-      this.addEvents();
-    }
-    addEvents() {
-      this.links.forEach((link, i) => {
-        link.addEventListener("click", (e) => this.setCurrent(i));
-      });
-    }
-    setCurrent(i) {
-      if (this.current !== null)
-        this.links[this.current].classList.remove("current");
-      this.current = i;
-      this.links[this.current].classList.add("current");
     }
   };
 
@@ -4491,49 +4583,22 @@
     }
   };
 
-  // src/modules/preloader.js
-  var Preloader = class {
-    wrapper = document.querySelector('[data-loader="w"]');
-    bar = [...document.querySelector('[data-loader="bar"]').children];
-    constructor() {
-      this.current = 0;
-      console.log("preloadr");
-      this.run();
-    }
-    run() {
-      this.interval = setInterval(() => {
-        this.current++;
-        if (this.current > this.bar.length - 1) {
-          this.kill();
-          return;
-        }
-        this.bar[this.current].classList.add("loaded");
-      }, 100);
-    }
-    kill() {
-      clearInterval(this.interval);
-      gsapWithCSS.to(this.wrapper, {
-        autoAlpha: 0,
-        duration: 0.2,
-        onComplete: () => {
-          this.wrapper.remove();
-        }
-      });
-    }
-  };
-
   // src/modules/dom.js
   var Dom = class {
     constructor() {
       this.wrap = document.querySelector("[data-taxi]");
-      this.nav = new Nav(document.querySelector("[data-cdnav]"));
       if (document.querySelector("[data-loader]"))
         this.preloader = new Preloader();
+      this.createOnce();
       this.create();
     }
     resize() {
     }
     render(t) {
+    }
+    createOnce() {
+      this.nav = new Nav(document.querySelector("[data-cdnav]"));
+      this.clock = new Clock();
     }
     create() {
       if (this.wrap.querySelector("[data-pmenu]")) {
