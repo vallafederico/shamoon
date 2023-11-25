@@ -16,9 +16,13 @@ Not sure it's needed should just use VITE
 
 - [x] **Clock**
 
-- [ ] **Mobile Nav**
-      data-mmenu
-      .open
+- [x] **Mobile Nav**
+
+- [x] **Cool Things**
+- [ ] retro cursor
+- [ ] some scramble animaiton (?)
+- [ ] hover preview item
+- [ ] figure out preloader (what should we do with it?)
 
 ## Todos
 
@@ -26,12 +30,17 @@ Not sure it's needed should just use VITE
 
 - [ ] Hovers
 
-- [ ] Mobile Things
+- [x] Mobile Things
 
-- [ ] Mobile Menu
+- [x] Mobile Menu
 
 - [x] _Preloader_
 
 - [ ] _Bottom Bar_
-- [ ] Bottom Bar (mobile)
+- [x] Bottom Bar (mobile)
 - [ ] Bottom Bar (functionality)
+
+## Last Things
+
+- [ ] Multiply Collection Lists
+- [ ] Make Collection Pages
