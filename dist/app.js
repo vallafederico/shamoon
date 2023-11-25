@@ -4381,6 +4381,8 @@
     current = null;
     constructor() {
       this.create();
+      this.triggerWrapper = document.querySelector("[data-pmenu=trigger]");
+      this.itemWrapper = document.querySelector("[data-pmenu=item]");
     }
     create() {
       this.triggers.forEach((item, i) => item.onclick = () => this.toggle(i));
@@ -4583,6 +4585,35 @@
     }
   };
 
+  // src/modules/mobile.js
+  var MobMenu = class {
+    constructor(element) {
+      this.element = element;
+      this.trigger = document.querySelector("[data-mmenu='trig']");
+      if (this.element.classList.contains("open")) {
+        this.element.classList.remove("open");
+      }
+      this.state = {
+        open: false
+      };
+      this.create();
+    }
+    create() {
+      this.trigger.addEventListener("click", () => {
+        this.toggle();
+      });
+    }
+    toggle() {
+      if (this.state.open) {
+        this.element.classList.remove("open");
+        this.state.open = false;
+      } else {
+        this.element.classList.add("open");
+        this.state.open = true;
+      }
+    }
+  };
+
   // src/modules/dom.js
   var Dom = class {
     constructor() {
@@ -4620,6 +4651,9 @@
         this.system = new System(this.wrap.querySelector("[data-system]"));
       } else
         this.system = null;
+      if (document.querySelector("[data-mmenu]")) {
+        this.mmenu = new MobMenu(document.querySelector("[data-mmenu]"));
+      }
       this.start();
     }
     start() {
@@ -5877,6 +5911,8 @@
       new ResizeObserver((entry) => this.resize(entry[0])).observe(this.body);
     }
     resize({ contentRect }) {
+      window.isMobile = contentRect.width <= 768;
+      window.isTablet = contentRect.width <= 1024;
       this.viewport?.resize();
       this.dom?.resize();
     }

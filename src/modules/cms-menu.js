@@ -12,6 +12,9 @@ export class CmsMenu {
   current = null;
   constructor() {
     this.create();
+
+    this.triggerWrapper = document.querySelector("[data-pmenu=trigger]");
+    this.itemWrapper = document.querySelector("[data-pmenu=item]");
   }
 
   create() {

@@ -9,6 +9,8 @@ import { Cdd } from "./cdd.js";
 import { System } from "./system.js";
 import { Services } from "./services.js";
 
+import { MobMenu } from "./mobile.js";
+
 export class Dom {
   constructor() {
     this.wrap = document.querySelector("[data-taxi]");
@@ -51,6 +53,10 @@ export class Dom {
     if (this.wrap.querySelector("[data-system]")) {
       this.system = new System(this.wrap.querySelector("[data-system]"));
     } else this.system = null;
+
+    if (document.querySelector("[data-mmenu]")) {
+      this.mmenu = new MobMenu(document.querySelector("[data-mmenu]"));
+    }
 
     // start
     this.start();

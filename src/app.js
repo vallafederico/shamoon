@@ -42,6 +42,9 @@ class App {
   }
 
   resize({ contentRect }) {
+    window.isMobile = contentRect.width <= 768;
+    window.isTablet = contentRect.width <= 1024;
+
     this.viewport?.resize();
     this.dom?.resize();
   }

@@ -16,6 +16,10 @@ Not sure it's needed should just use VITE
 
 - [x] **Clock**
 
+- [ ] **Mobile Nav**
+      data-mmenu
+      .open
+
 ## Todos
 
 - [x] Menu States
