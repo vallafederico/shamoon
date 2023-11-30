@@ -20,9 +20,13 @@ Not sure it's needed should just use VITE
 
 - [ ] **Cool Things**
 - [x] hover preview item
-- [ ] retro cursor
+- [ ] (AWAITING CLOCKS) more clocks and selector
+- [ ] (WAITING CURSORS SVGS) retro cursor
 - [ ] some scramble animation (?)
+
+- [ ] **Preloader**
 - [ ] figure out preloader (what should we do with it?)
+  - [ ] make visible on home
 
 ## Todos
 
@@ -40,7 +44,7 @@ Not sure it's needed should just use VITE
 
 ## Fix
 
-- [ ] custom dropdown for settings
+- [x] custom dropdown for settings
 
 ## Last Things
 

@@ -9,6 +9,7 @@ import { Cdd } from "./cdd.js";
 import { System } from "./system.js";
 import { Services } from "./services.js";
 import { Preview } from "./preview.js";
+import { Dropdown } from "./dropdown.js";
 
 import { MobMenu } from "./mobile.js";
 
@@ -37,6 +38,12 @@ export class Dom {
   }
 
   create() {
+    if (this.wrap.querySelector("[data-dd='w']")) {
+      this.dropdowns = [...this.wrap.querySelectorAll("[data-dd='w']")].map(
+        (el) => new Dropdown({ element: el })
+      );
+    }
+
     if (this.wrap.querySelector("[data-pmenu]")) {
       this.cmsMenu = new CmsMenu();
     } else this.cmsMenu = null;
@@ -75,6 +82,9 @@ export class Dom {
     this.system?.destroy();
     this.cdds?.forEach((cdd) => {
       cdd.destroy();
+    });
+    this.dropdowns?.forEach((dd) => {
+      dd.destroy();
     });
   }
 

@@ -4648,6 +4648,27 @@
     }
   };
 
+  // src/modules/dropdown.js
+  var Dropdown = class {
+    constructor({ element }) {
+      this.element = element;
+      this.list = this.element.querySelector('[data-dd="list"]');
+      this.create();
+    }
+    create() {
+      this.element.onclick = (e) => {
+        if (this.list.style.display === "flex") {
+          this.list.style.display = "none";
+        } else {
+          this.list.style.display = "flex";
+        }
+      };
+    }
+    destroy() {
+      this.element.onclick = null;
+    }
+  };
+
   // src/modules/mobile.js
   var MobMenu = class {
     constructor(element) {
@@ -4696,6 +4717,11 @@
       this.preview = new Preview();
     }
     create() {
+      if (this.wrap.querySelector("[data-dd='w']")) {
+        this.dropdowns = [...this.wrap.querySelectorAll("[data-dd='w']")].map(
+          (el) => new Dropdown({ element: el })
+        );
+      }
       if (this.wrap.querySelector("[data-pmenu]")) {
         this.cmsMenu = new CmsMenu();
       } else
@@ -4729,6 +4755,9 @@
       this.system?.destroy();
       this.cdds?.forEach((cdd) => {
         cdd.destroy();
+      });
+      this.dropdowns?.forEach((dd) => {
+        dd.destroy();
       });
     }
     /* --  Pages */
