@@ -136,9 +136,21 @@ export class System {
   }
 
   create() {
-    const ex = getComputedStyle(document.documentElement);
+    // bg images | data-bg='{}' | data-bg='trigger' | data-bg='w'
+    this.bgWrap = document.querySelector("[data-bg='w']");
+    this.bgTrigger = document.querySelector("[data-bg='trigger']");
+    this.bgImgs = [...this.bgWrap.querySelectorAll("[data-bg]")];
+
+    this.bgTrigger.onclick = () => (this.bgWrap.style.display = "flex");
+    this.bgImgs.forEach((item, i) => {
+      item.onclick = () => {
+        this.bgWrap.style.display = "none";
+        document.body.style.backgroundImage = `url(${item.dataset.bg})`;
+      };
+    });
 
     // **  fonts
+    const ex = getComputedStyle(document.documentElement);
     this.fonts = document.querySelector('[data-system="font"]');
     const fontName = document.querySelector("[data-fontName]");
     const fontDropDown = this.fonts.children[1];
@@ -162,11 +174,6 @@ export class System {
         bg.style.backgroundColor = window.defaults.colors[i];
 
         range.value = window.defaults.systemSlider[i];
-
-        // range.addEventListener("input", (e) =>
-        //   this.changeColor(i, e.target.value, item)
-        // );
-
         range.oninput = (e) => this.changeColor(i, e.target.value, item);
 
         return {
@@ -180,25 +187,26 @@ export class System {
   }
 
   changeColor(index, value) {
-    // if (value === "0") {
-    //   console.log(value, window.defaults.colors[index]);
-    // }
-
     const val =
       value === "0" ? window.defaults.colors[index] : colors100[+value];
 
     switch (index) {
       case 0:
         document.documentElement.style.setProperty("--col--blue", val);
+        window.defaults.state.bgColor = val;
+        document.body.style.backgroundImage = "none"; // reset bg image
         break;
       case 1:
         document.documentElement.style.setProperty("--col--darkblue", val);
+
         break;
       case 2:
         document.documentElement.style.setProperty("--col--green", val);
+        window.defaults.state.accColor = val;
         break;
       case 3:
         document.documentElement.style.setProperty("--col--white", val);
+        window.defaults.state.txColor = val;
         break;
     }
 
@@ -210,5 +218,7 @@ export class System {
   destroy() {
     this.colors.forEach((item, i) => (item.range.oninput = null));
     this.fontDropDownElements.forEach((item, i) => (item.onclick = null));
+    this.bgTrigger.onclick = null;
+    this.bgImgs.forEach((item, i) => (item.onclick = null));
   }
 }

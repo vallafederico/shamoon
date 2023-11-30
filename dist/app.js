@@ -4396,13 +4396,13 @@
         return;
       if (this.current !== null) {
         this.items[this.current].style.display = "none";
-        this.triggers[this.current].style.backgroundColor = window.defaults.colors[0];
-        this.triggers[this.current].style.color = window.defaults.colors[3];
+        this.triggers[this.current].style.backgroundColor = window.defaults.state.bgColor;
+        this.triggers[this.current].style.color = window.defaults.state.txColor;
       }
       this.current = i;
       this.items[i].style.display = "block";
-      this.triggers[i].style.backgroundColor = window.defaults.colors[2];
-      this.triggers[i].style.color = window.defaults.colors[0];
+      this.triggers[i].style.backgroundColor = window.defaults.state.accColor;
+      this.triggers[i].style.color = window.defaults.state.bgColor;
     }
   };
 
@@ -4524,6 +4524,16 @@
       this.create();
     }
     create() {
+      this.bgWrap = document.querySelector("[data-bg='w']");
+      this.bgTrigger = document.querySelector("[data-bg='trigger']");
+      this.bgImgs = [...this.bgWrap.querySelectorAll("[data-bg]")];
+      this.bgTrigger.onclick = () => this.bgWrap.style.display = "flex";
+      this.bgImgs.forEach((item, i) => {
+        item.onclick = () => {
+          this.bgWrap.style.display = "none";
+          document.body.style.backgroundImage = `url(${item.dataset.bg})`;
+        };
+      });
       const ex = getComputedStyle(document.documentElement);
       this.fonts = document.querySelector('[data-system="font"]');
       const fontName = document.querySelector("[data-fontName]");
@@ -4558,15 +4568,19 @@
       switch (index) {
         case 0:
           document.documentElement.style.setProperty("--col--blue", val);
+          window.defaults.state.bgColor = val;
+          document.body.style.backgroundImage = "none";
           break;
         case 1:
           document.documentElement.style.setProperty("--col--darkblue", val);
           break;
         case 2:
           document.documentElement.style.setProperty("--col--green", val);
+          window.defaults.state.accColor = val;
           break;
         case 3:
           document.documentElement.style.setProperty("--col--white", val);
+          window.defaults.state.txColor = val;
           break;
       }
       this.colors[index].text.innerHTML = val;
@@ -4576,6 +4590,8 @@
     destroy() {
       this.colors.forEach((item, i) => item.range.oninput = null);
       this.fontDropDownElements.forEach((item, i) => item.onclick = null);
+      this.bgTrigger.onclick = null;
+      this.bgImgs.forEach((item, i) => item.onclick = null);
     }
   };
 
@@ -5946,6 +5962,11 @@
           ex.getPropertyValue("--col--green"),
           ex.getPropertyValue("--col--white")
         ],
+        state: {
+          txColor: ex.getPropertyValue("--col--white"),
+          accColor: ex.getPropertyValue("--col--green"),
+          bgColor: ex.getPropertyValue("--col--blue")
+        },
         systemSlider: [0, 0, 0, 0]
       };
       this.init();

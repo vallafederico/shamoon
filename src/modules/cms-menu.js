@@ -33,10 +33,9 @@ export class CmsMenu {
       // hide previous
       this.items[this.current].style.display = "none";
 
-      // + remove greren highlight
       this.triggers[this.current].style.backgroundColor =
-        window.defaults.colors[0];
-      this.triggers[this.current].style.color = window.defaults.colors[3];
+        window.defaults.state.bgColor;
+      this.triggers[this.current].style.color = window.defaults.state.txColor;
     }
 
     // show current
@@ -44,7 +43,7 @@ export class CmsMenu {
     this.items[i].style.display = "block";
 
     // + add green highlight
-    this.triggers[i].style.backgroundColor = window.defaults.colors[2];
-    this.triggers[i].style.color = window.defaults.colors[0];
+    this.triggers[i].style.backgroundColor = window.defaults.state.accColor;
+    this.triggers[i].style.color = window.defaults.state.bgColor;
   }
 }

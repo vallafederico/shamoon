@@ -21,6 +21,11 @@ class App {
         ex.getPropertyValue("--col--green"),
         ex.getPropertyValue("--col--white"),
       ],
+      state: {
+        txColor: ex.getPropertyValue("--col--white"),
+        accColor: ex.getPropertyValue("--col--green"),
+        bgColor: ex.getPropertyValue("--col--blue"),
+      },
       systemSlider: [0, 0, 0, 0],
     };
 

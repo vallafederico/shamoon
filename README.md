@@ -6,9 +6,9 @@ Not sure it's needed should just use VITE
 
 - [x] **Project Menu**
 
-- [ ] **System Settings**
+- [x] **System Settings**
 - [x] font switcher - redaction all (no bold / italics)
-- [ ] image pick (from CMS collection)
+- [x] image pick (from CMS collection)
 
 - [x] **Services Links**
 
@@ -37,6 +37,10 @@ Not sure it's needed should just use VITE
 - [x] _Bottom Bar_
 - [x] Bottom Bar (mobile)
 - [x] Bottom Bar (functionality)
+
+## Fix
+
+- [ ] custom dropdown for settings
 
 ## Last Things
 
