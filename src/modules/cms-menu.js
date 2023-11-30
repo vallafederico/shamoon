@@ -26,14 +26,25 @@ export class CmsMenu {
   }
 
   /** Events */
-
   toggle(i) {
     if (this.current === i) return;
+
     if (this.current !== null) {
+      // hide previous
       this.items[this.current].style.display = "none";
+
+      // + remove greren highlight
+      this.triggers[this.current].style.backgroundColor =
+        window.defaults.colors[0];
+      this.triggers[this.current].style.color = window.defaults.colors[3];
     }
 
+    // show current
     this.current = i;
     this.items[i].style.display = "block";
+
+    // + add green highlight
+    this.triggers[i].style.backgroundColor = window.defaults.colors[2];
+    this.triggers[i].style.color = window.defaults.colors[0];
   }
 }

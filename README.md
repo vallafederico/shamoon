@@ -7,8 +7,8 @@ Not sure it's needed should just use VITE
 - [x] **Project Menu**
 
 - [ ] **System Settings**
-- [ ] image upload
-- [ ] font switcher
+- [x] font switcher - redaction all (no bold / italics)
+- [ ] image pick (from CMS collection)
 
 - [x] **Services Links**
 
@@ -18,17 +18,15 @@ Not sure it's needed should just use VITE
 
 - [x] **Mobile Nav**
 
-- [x] **Cool Things**
+- [ ] **Cool Things**
+- [x] hover preview item
 - [ ] retro cursor
-- [ ] some scramble animaiton (?)
-- [ ] hover preview item
+- [ ] some scramble animation (?)
 - [ ] figure out preloader (what should we do with it?)
 
 ## Todos
 
 - [x] Menu States
-
-- [ ] Hovers
 
 - [x] Mobile Things
 
@@ -36,9 +34,9 @@ Not sure it's needed should just use VITE
 
 - [x] _Preloader_
 
-- [ ] _Bottom Bar_
+- [x] _Bottom Bar_
 - [x] Bottom Bar (mobile)
-- [ ] Bottom Bar (functionality)
+- [x] Bottom Bar (functionality)
 
 ## Last Things
 

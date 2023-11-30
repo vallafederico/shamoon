@@ -119,25 +119,39 @@ const colors100 = [
   "#666666",
 ];
 
+const fonts = [
+  "--font-50",
+  "--font-10",
+  "--font-20",
+  "--font-35",
+  "--font-70",
+  "--font-100",
+];
+
 export class System {
   constructor(wrapper) {
     this.wrapper = wrapper;
-
-    // watch out the thing is resetting the defaults everytime you come back to the page
-    // const ex = getComputedStyle(document.documentElement);
-    // this.defaults = [
-    //   ex.getPropertyValue("--col--blue"),
-    //   ex.getPropertyValue("--col--darkblue"),
-    //   ex.getPropertyValue("--col--green"),
-    //   ex.getPropertyValue("--col--white"),
-    // ];
-
-    // console.log(this.defaults);
 
     this.create();
   }
 
   create() {
+    const ex = getComputedStyle(document.documentElement);
+
+    // **  fonts
+    this.fonts = document.querySelector('[data-system="font"]');
+    const fontName = document.querySelector("[data-fontName]");
+    const fontDropDown = this.fonts.children[1];
+    this.fontDropDownElements = [...fontDropDown.children];
+
+    this.fontDropDownElements.forEach((item, i) => {
+      item.onclick = () => {
+        document.body.style.fontFamily = ex.getPropertyValue(fonts[i]);
+        fontName.innerHTML = item.innerHTML;
+      };
+    });
+
+    // **  colors
     this.colors = [...document.querySelectorAll("[data-system='color']")].map(
       (item, i) => {
         const range = item.querySelector("input[type='range']");
@@ -149,9 +163,11 @@ export class System {
 
         range.value = window.defaults.systemSlider[i];
 
-        range.addEventListener("input", (e) =>
-          this.changeColor(i, e.target.value, item)
-        );
+        // range.addEventListener("input", (e) =>
+        //   this.changeColor(i, e.target.value, item)
+        // );
+
+        range.oninput = (e) => this.changeColor(i, e.target.value, item);
 
         return {
           item,
@@ -180,6 +196,7 @@ export class System {
         break;
       case 2:
         document.documentElement.style.setProperty("--col--green", val);
+        break;
       case 3:
         document.documentElement.style.setProperty("--col--white", val);
         break;
@@ -191,6 +208,7 @@ export class System {
   }
 
   destroy() {
-    // console.log("System::destroy");
+    this.colors.forEach((item, i) => (item.range.oninput = null));
+    this.fontDropDownElements.forEach((item, i) => (item.onclick = null));
   }
 }

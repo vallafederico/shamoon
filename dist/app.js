@@ -4396,9 +4396,13 @@
         return;
       if (this.current !== null) {
         this.items[this.current].style.display = "none";
+        this.triggers[this.current].style.backgroundColor = window.defaults.colors[0];
+        this.triggers[this.current].style.color = window.defaults.colors[3];
       }
       this.current = i;
       this.items[i].style.display = "block";
+      this.triggers[i].style.backgroundColor = window.defaults.colors[2];
+      this.triggers[i].style.color = window.defaults.colors[0];
     }
   };
 
@@ -4506,12 +4510,31 @@
     "#333333",
     "#666666"
   ];
+  var fonts = [
+    "--font-50",
+    "--font-10",
+    "--font-20",
+    "--font-35",
+    "--font-70",
+    "--font-100"
+  ];
   var System = class {
     constructor(wrapper) {
       this.wrapper = wrapper;
       this.create();
     }
     create() {
+      const ex = getComputedStyle(document.documentElement);
+      this.fonts = document.querySelector('[data-system="font"]');
+      const fontName = document.querySelector("[data-fontName]");
+      const fontDropDown = this.fonts.children[1];
+      this.fontDropDownElements = [...fontDropDown.children];
+      this.fontDropDownElements.forEach((item, i) => {
+        item.onclick = () => {
+          document.body.style.fontFamily = ex.getPropertyValue(fonts[i]);
+          fontName.innerHTML = item.innerHTML;
+        };
+      });
       this.colors = [...document.querySelectorAll("[data-system='color']")].map(
         (item, i) => {
           const range = item.querySelector("input[type='range']");
@@ -4520,10 +4543,7 @@
           text.innerHTML = window.defaults.colors[i];
           bg.style.backgroundColor = window.defaults.colors[i];
           range.value = window.defaults.systemSlider[i];
-          range.addEventListener(
-            "input",
-            (e) => this.changeColor(i, e.target.value, item)
-          );
+          range.oninput = (e) => this.changeColor(i, e.target.value, item);
           return {
             item,
             range,
@@ -4544,6 +4564,7 @@
           break;
         case 2:
           document.documentElement.style.setProperty("--col--green", val);
+          break;
         case 3:
           document.documentElement.style.setProperty("--col--white", val);
           break;
@@ -4553,6 +4574,8 @@
       window.defaults.systemSlider[index] = value;
     }
     destroy() {
+      this.colors.forEach((item, i) => item.range.oninput = null);
+      this.fontDropDownElements.forEach((item, i) => item.onclick = null);
     }
   };
 
@@ -4582,6 +4605,30 @@
       } else {
         item.style.display = "none";
       }
+    }
+  };
+
+  // src/modules/preview.js
+  var Preview = class {
+    constructor() {
+      this.target = document.querySelector("[data-previewTarget]");
+      this.original = this.target.style.backgroundImage;
+    }
+    create() {
+      document.querySelectorAll("[data-preview]").forEach((item) => {
+        item.onmouseenter = () => {
+          this.target.style.backgroundImage = `url(${item.dataset.preview})`;
+        };
+        item.onmouseleave = () => {
+          this.target.style.backgroundImage = this.original;
+        };
+      });
+    }
+    destroy() {
+      document.querySelectorAll("[data-preview]").forEach((item) => {
+        item.onmouseenter = () => null;
+        item.onmouseleave = () => null;
+      });
     }
   };
 
@@ -4630,6 +4677,7 @@
     createOnce() {
       this.nav = new Nav(document.querySelector("[data-cdnav]"));
       this.clock = new Clock();
+      this.preview = new Preview();
     }
     create() {
       if (this.wrap.querySelector("[data-pmenu]")) {
@@ -4642,7 +4690,6 @@
         this.services = null;
       if (this.wrap.querySelector("[data-cdd]")) {
         this.cdds = [...this.wrap.querySelectorAll("[data-cdd]")].map((el) => {
-          console.log(el);
           return new Cdd(el);
         });
       } else
@@ -4654,11 +4701,13 @@
       if (document.querySelector("[data-mmenu]")) {
         this.mmenu = new MobMenu(document.querySelector("[data-mmenu]"));
       }
+      this.preview.create();
       this.start();
     }
     start() {
     }
     destroy() {
+      this.preview?.destroy();
       this.cmsMenu?.destroy();
       this.services?.destroy();
       this.system?.destroy();

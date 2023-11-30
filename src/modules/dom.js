@@ -8,6 +8,7 @@ import { CmsMenu } from "./cms-menu.js";
 import { Cdd } from "./cdd.js";
 import { System } from "./system.js";
 import { Services } from "./services.js";
+import { Preview } from "./preview.js";
 
 import { MobMenu } from "./mobile.js";
 
@@ -32,6 +33,7 @@ export class Dom {
   createOnce() {
     this.nav = new Nav(document.querySelector("[data-cdnav]"));
     this.clock = new Clock();
+    this.preview = new Preview();
   }
 
   create() {
@@ -45,7 +47,7 @@ export class Dom {
 
     if (this.wrap.querySelector("[data-cdd]")) {
       this.cdds = [...this.wrap.querySelectorAll("[data-cdd]")].map((el) => {
-        console.log(el);
+        // console.log(el);
         return new Cdd(el);
       });
     } else this.cdds = null;
@@ -58,6 +60,8 @@ export class Dom {
       this.mmenu = new MobMenu(document.querySelector("[data-mmenu]"));
     }
 
+    this.preview.create();
+
     // start
     this.start();
   }
@@ -65,6 +69,7 @@ export class Dom {
   start() {}
 
   destroy() {
+    this.preview?.destroy();
     this.cmsMenu?.destroy();
     this.services?.destroy();
     this.system?.destroy();
