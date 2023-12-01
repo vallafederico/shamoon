@@ -1,32 +1,28 @@
 # Webflow Dev Boilerplate
 
-Not sure it's needed should just use VITE
-
 ## Custom Components
 
 - [x] **Project Menu**
-
 - [x] **System Settings**
 - [x] font switcher - redaction all (no bold / italics)
 - [x] image pick (from CMS collection)
-
 - [x] **Services Links**
-
 - [x] **Nav**
-
 - [x] **Clock**
-
 - [x] **Mobile Nav**
 
-- [ ] **Cool Things**
+- [x] **Cool Things**
 - [x] hover preview item
-- [ ] (AWAITING CLOCKS) more clocks and selector
-- [ ] (WAITING CURSORS SVGS) retro cursor
-- [ ] some scramble animation (?)
+- [x] some scramble animation
+- [ ] scramble nested things
 
 - [ ] **Preloader**
 - [ ] figure out preloader (what should we do with it?)
-  - [ ] make visible on home
+
+  ## Pending Dependencies
+
+- [ ] (AWAITING CLOCKS) more clocks and selector
+- [ ] (WAITING CURSORS SVGS) retro cursor
 
 ## Todos
 

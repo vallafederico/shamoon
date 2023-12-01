@@ -12,7 +12,7 @@ export class Preloader {
   bar = [...document.querySelector('[data-loader="bar"]').children];
   constructor() {
     this.current = 0;
-    console.log("preloadr");
+    // console.log("preloadr");
 
     this.run();
   }

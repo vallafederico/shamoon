@@ -3,26 +3,36 @@
 import { Nav } from "./nav.js";
 import { Preloader } from "./preloader.js";
 import { Clock } from "./clock.js";
-
 import { CmsMenu } from "./cms-menu.js";
 import { Cdd } from "./cdd.js";
 import { System } from "./system.js";
 import { Services } from "./services.js";
 import { Preview } from "./preview.js";
 import { Dropdown } from "./dropdown.js";
-
 import { MobMenu } from "./mobile.js";
+import { Scramble } from "./animation/scramble.js";
+
+import Tween from "gsap";
 
 export class Dom {
   constructor() {
-    this.wrap = document.querySelector("[data-taxi]");
+    this.wrap = document.querySelector(".w");
+    this.page = document.querySelector("[data-taxi]");
+    Tween.set(this.wrap, { autoAlpha: 0 });
 
-    // console.log(document.querySelector("[data-loader]"));
     if (document.querySelector("[data-loader]"))
       this.preloader = new Preloader();
 
+    // animation nav
+    this.scrambles = [...this.wrap.querySelectorAll("[data-a='sc']")].map(
+      (el) => {
+        return new Scramble({ element: el });
+      }
+    );
+
     this.createOnce();
     this.create();
+    this.animateFirstIn();
   }
 
   resize() {}
@@ -69,40 +79,79 @@ export class Dom {
 
     this.preview.create();
 
+    // aniamtion
+    this.pagescrambles = [...this.wrap.querySelectorAll("[data-a='scp']")].map(
+      (el) => {
+        return new Scramble({ element: el });
+      }
+    );
+
+    this.obsscramble = [...this.wrap.querySelectorAll("[data-a='sco']")].map(
+      (el) => {
+        return new Scramble({ element: el, observed: true });
+      }
+    );
+
     // start
     this.start();
   }
 
-  start() {}
+  start() {
+    this.pagescrambles.forEach((scramble) => scramble.animateIn());
+  }
 
   destroy() {
     this.preview?.destroy();
     this.cmsMenu?.destroy();
     this.services?.destroy();
     this.system?.destroy();
-    this.cdds?.forEach((cdd) => {
-      cdd.destroy();
+    this.cdds?.forEach((cdd) => cdd.destroy());
+    this.dropdowns?.forEach((dd) => dd.destroy());
+    this.obsscramble?.forEach((scramble) => scramble.destroy());
+    // this.pagescrambles?.forEach((scramble) => scramble.destroy());
+  }
+
+  /* --  Animation */
+  animateFirstIn() {
+    Tween.to(this.wrap, {
+      autoAlpha: 1,
+      duration: 0.2,
+      delay: 0.1,
+      ease: "power2.in",
     });
-    this.dropdowns?.forEach((dd) => {
-      dd.destroy();
+
+    this.scrambles.forEach((scramble) => {
+      scramble.animateIn();
     });
   }
 
   /* --  Pages */
   transitionOut(page) {
     this.destroy();
-    // console.log("DOM::transitionOut", page);
+
+    // * transition page out
+    Tween.to(this.page, {
+      autoAlpha: 0,
+      duration: 0.4,
+      ease: "steos(2)",
+    });
 
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
-      }, 100);
+      }, 150);
     });
   }
 
   transitionIn(page) {
     this.create();
-    // console.log("DOM::transitionIn", page);
+
+    // * transition page in
+    Tween.to(this.page, {
+      autoAlpha: 1,
+      duration: 0.6,
+      ease: "steps(6)",
+    });
 
     return new Promise((resolve) => {
       setTimeout(() => {
