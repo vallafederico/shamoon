@@ -4677,6 +4677,7 @@
   var Services = class {
     trigger = [...document.querySelectorAll("[data-serv='trig']")];
     items = [...document.querySelectorAll("[data-serv='item']")];
+    current = null;
     constructor() {
       this.create();
     }
@@ -4694,11 +4695,10 @@
       )[0];
       if (item.length < 1)
         return;
-      if (item.style.display == "none" || item.style.display == "") {
+      this.items.forEach((it) => it.style.display = "none");
+      if (this.current !== i)
         item.style.display = "block";
-      } else {
-        item.style.display = "none";
-      }
+      this.current = i;
     }
   };
 

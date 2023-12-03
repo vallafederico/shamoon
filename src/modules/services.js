@@ -7,6 +7,7 @@
 export class Services {
   trigger = [...document.querySelectorAll("[data-serv='trig']")];
   items = [...document.querySelectorAll("[data-serv='item']")];
+  current = null;
 
   constructor() {
     // console.log("services", this.trigger, this.items);
@@ -29,13 +30,18 @@ export class Services {
     )[0];
 
     if (item.length < 1) return;
-    // console.log(item.style.display);
 
-    if (item.style.display == "none" || item.style.display == "") {
-      item.style.display = "block";
-    } else {
-      item.style.display = "none";
-    }
+    this.items.forEach((it) => (it.style.display = "none"));
+
+    if (this.current !== i) item.style.display = "block";
+
+    this.current = i;
+
+    // if (item.style.display == "none" || item.style.display == "") {
+    //   item.style.display = "block";
+    // } else {
+    //   item.style.display = "none";
+    // }
 
     // console.log(item);
   }
