@@ -5,12 +5,12 @@
 */
 
 export class Services {
-  trigger = [...document.querySelectorAll("[data-serv='trig']")];
-  items = [...document.querySelectorAll("[data-serv='item']")];
   current = null;
 
-  constructor() {
-    // console.log("services", this.trigger, this.items);
+  constructor(unit) {
+    this.unit = unit;
+    this.trigger = [...unit.querySelectorAll("[data-serv='trig']")];
+    this.items = [...unit.querySelectorAll("[data-serv='item']")];
     this.create();
   }
 

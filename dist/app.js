@@ -4675,10 +4675,11 @@
 
   // src/modules/services.js
   var Services = class {
-    trigger = [...document.querySelectorAll("[data-serv='trig']")];
-    items = [...document.querySelectorAll("[data-serv='item']")];
     current = null;
-    constructor() {
+    constructor(unit) {
+      this.unit = unit;
+      this.trigger = [...unit.querySelectorAll("[data-serv='trig']")];
+      this.items = [...unit.querySelectorAll("[data-serv='item']")];
       this.create();
     }
     create() {
@@ -5173,8 +5174,12 @@
         this.cmsMenu = new CmsMenu();
       } else
         this.cmsMenu = null;
-      if (this.wrap.querySelector("[data-serv]")) {
-        this.services = new Services();
+      if (this.wrap.querySelector("[data-servWrap]")) {
+        this.services = [...this.wrap.querySelectorAll("[data-servWrap]")].map(
+          (el) => {
+            return new Services(el);
+          }
+        );
       } else
         this.services = null;
       if (this.wrap.querySelector("[data-cdd]")) {
@@ -5209,8 +5214,8 @@
     destroy() {
       this.preview?.destroy();
       this.cmsMenu?.destroy();
-      this.services?.destroy();
       this.system?.destroy();
+      this.services?.forEach((service) => service.destroy());
       this.cdds?.forEach((cdd) => cdd.destroy());
       this.dropdowns?.forEach((dd) => dd.destroy());
       this.obsscramble?.forEach((scramble) => scramble.destroy());

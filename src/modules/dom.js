@@ -58,13 +58,16 @@ export class Dom {
       this.cmsMenu = new CmsMenu();
     } else this.cmsMenu = null;
 
-    if (this.wrap.querySelector("[data-serv]")) {
-      this.services = new Services();
+    if (this.wrap.querySelector("[data-servWrap]")) {
+      this.services = [...this.wrap.querySelectorAll("[data-servWrap]")].map(
+        (el) => {
+          return new Services(el);
+        }
+      );
     } else this.services = null;
 
     if (this.wrap.querySelector("[data-cdd]")) {
       this.cdds = [...this.wrap.querySelectorAll("[data-cdd]")].map((el) => {
-        // console.log(el);
         return new Cdd(el);
       });
     } else this.cdds = null;
@@ -103,12 +106,11 @@ export class Dom {
   destroy() {
     this.preview?.destroy();
     this.cmsMenu?.destroy();
-    this.services?.destroy();
     this.system?.destroy();
+    this.services?.forEach((service) => service.destroy());
     this.cdds?.forEach((cdd) => cdd.destroy());
     this.dropdowns?.forEach((dd) => dd.destroy());
     this.obsscramble?.forEach((scramble) => scramble.destroy());
-    // this.pagescrambles?.forEach((scramble) => scramble.destroy());
   }
 
   /* --  Animation */
