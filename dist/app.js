@@ -4422,7 +4422,7 @@
       };
       this.texts.loc.textContent = "Location";
       const formattedDate = date.toLocaleDateString(void 0, options);
-      this.animateText(formattedDate);
+      this.animateText(formattedDate, hours, min);
       setInterval(() => {
         const date2 = /* @__PURE__ */ new Date();
         const hours2 = date2.getHours();
@@ -4430,21 +4430,21 @@
         this.animateTo(hours2, min2);
       }, 1e3 * 60);
     }
-    animateText(date) {
+    animateText(date, hours, min) {
       this.texts.date.textContent = date;
-      this.texts.time.textContent = "14:00";
+      this.texts.time.textContent = hours + ":" + ("0" + min).slice(-2);
     }
     animateTo(hours, min) {
       gsapWithCSS.to(this.hours, {
         duration: 0.5,
         transformOrigin: "bottom",
-        rotation: 180 + hours * 30 + min * 0.5,
+        rotation: hours * 30 + min * 0.5,
         ease: "power2.out"
       });
       gsapWithCSS.to(this.min, {
         duration: 0.5,
         transformOrigin: "bottom",
-        rotation: 180 + min * 6,
+        rotation: min * 6,
         ease: "power2.out"
       });
     }

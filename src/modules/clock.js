@@ -47,7 +47,7 @@ export class Clock {
     this.texts.loc.textContent = "Location"; // initial set
 
     const formattedDate = date.toLocaleDateString(undefined, options);
-    this.animateText(formattedDate);
+    this.animateText(formattedDate, hours, min);
 
     setInterval(() => {
       const date = new Date();
@@ -58,9 +58,9 @@ export class Clock {
     }, 1000 * 60);
   }
 
-  animateText(date) {
+  animateText(date, hours, min) {
     this.texts.date.textContent = date;
-    this.texts.time.textContent = "14:00";
+    this.texts.time.textContent = hours + ":" + ("0" + min).slice(-2);
   }
 
   animateTo(hours, min) {
@@ -68,13 +68,13 @@ export class Clock {
     Tween.to(this.hours, {
       duration: 0.5,
       transformOrigin: "bottom",
-      rotation: 180 + hours * 30 + min * 0.5,
+      rotation: hours * 30 + min * 0.5,
       ease: "power2.out",
     });
     Tween.to(this.min, {
       duration: 0.5,
       transformOrigin: "bottom",
-      rotation: 180 + min * 6,
+      rotation: min * 6,
       ease: "power2.out",
     });
   }
