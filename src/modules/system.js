@@ -184,6 +184,17 @@ export class System {
         };
       }
     );
+
+    // * clocks
+    this.clock = document.querySelector("[data-system='clock']");
+    const clockDropDown = this.clock.children[1];
+    this.clockDropDownElements = [...clockDropDown.children];
+
+    this.clockDropDownElements.forEach((item, i) => {
+      item.onclick = () => {
+        window.app.dom.clock.changeClock(i);
+      };
+    });
   }
 
   changeColor(index, value) {

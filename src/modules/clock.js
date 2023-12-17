@@ -5,9 +5,30 @@ id="hours"
 id="min"
 */
 
-export class Clock {
+export class Clocks {
+  current = 0;
+
   constructor() {
-    this.svg = document.querySelector("[data-svg='clock']");
+    this.clocks = [...document.querySelectorAll("[data-svg='clock']")].map(
+      (el) => {
+        return new Clock(el);
+      }
+    );
+  }
+
+  changeClock(i) {
+    // console.log(i, "checngeXClock", this.current);
+    this.clocks[this.current].svg.style.display = "none";
+    this.clocks[i].svg.style.display = "block";
+
+    this.current = i;
+  }
+}
+
+export class Clock {
+  constructor(el) {
+    this.svg = el;
+    // console.log(this.svg);
     this.hours = this.svg.querySelector("#hours");
     this.min = this.svg.querySelector("#min");
     // console.log(this.svg, this.hours, this.min);

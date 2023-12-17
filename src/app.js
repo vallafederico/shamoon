@@ -2,7 +2,7 @@ import "./style/main.css";
 
 import { Dom } from "./modules/dom";
 import { Viewport } from "./modules/viewport";
-import { Scroll } from "./modules/scroll";
+// import { Scroll } from "./modules/scroll";
 import { Pages } from "./modules/pages";
 
 class App {
@@ -12,7 +12,6 @@ class App {
 
     this.time = 0;
 
-    // watch out the thing is resetting the defaults everytime you come back to the page
     const ex = getComputedStyle(document.documentElement);
     window.defaults = {
       colors: [

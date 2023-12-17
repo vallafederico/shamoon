@@ -2,7 +2,7 @@
 
 import { Nav } from "./nav.js";
 import { Preloader } from "./preloader.js";
-import { Clock } from "./clock.js";
+import { Clock, Clocks } from "./clock.js";
 import { CmsMenu } from "./cms-menu.js";
 import { Cdd } from "./cdd.js";
 import { System } from "./system.js";
@@ -43,7 +43,7 @@ export class Dom {
 
   createOnce() {
     this.nav = new Nav(document.querySelector("[data-cdnav]"));
-    this.clock = new Clock();
+    this.clock = new Clocks();
     this.preview = new Preview();
   }
 

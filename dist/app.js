@@ -4392,9 +4392,24 @@
   };
 
   // src/modules/clock.js
-  var Clock = class {
+  var Clocks = class {
+    current = 0;
     constructor() {
-      this.svg = document.querySelector("[data-svg='clock']");
+      this.clocks = [...document.querySelectorAll("[data-svg='clock']")].map(
+        (el) => {
+          return new Clock(el);
+        }
+      );
+    }
+    changeClock(i) {
+      this.clocks[this.current].svg.style.display = "none";
+      this.clocks[i].svg.style.display = "block";
+      this.current = i;
+    }
+  };
+  var Clock = class {
+    constructor(el) {
+      this.svg = el;
       this.hours = this.svg.querySelector("#hours");
       this.min = this.svg.querySelector("#min");
       this.texts = {
@@ -4640,6 +4655,14 @@
           };
         }
       );
+      this.clock = document.querySelector("[data-system='clock']");
+      const clockDropDown = this.clock.children[1];
+      this.clockDropDownElements = [...clockDropDown.children];
+      this.clockDropDownElements.forEach((item, i) => {
+        item.onclick = () => {
+          window.app.dom.clock.changeClock(i);
+        };
+      });
     }
     changeColor(index, value) {
       const val = value === "0" ? window.defaults.colors[index] : colors100[+value];
@@ -5161,7 +5184,7 @@
     }
     createOnce() {
       this.nav = new Nav(document.querySelector("[data-cdnav]"));
-      this.clock = new Clock();
+      this.clock = new Clocks();
       this.preview = new Preview();
     }
     create() {
