@@ -6,7 +6,6 @@
 export class Cdd {
   current = null;
   constructor(element) {
-    // console.log(element);
     this.element = element;
     this.triggers = [...this.element.querySelectorAll(".cdd-trig")];
     this.drops = [...this.element.querySelectorAll(".cdd-drop-w")];
@@ -19,6 +18,8 @@ export class Cdd {
     this.triggers.forEach((trig, i) => {
       trig.addEventListener("click", (e) => this.toggle(i));
     });
+
+    if (this.element.dataset.cdd === "open") this.toggle(0);
   }
 
   toggle(i) {

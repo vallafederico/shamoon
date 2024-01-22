@@ -92,6 +92,8 @@
       this.triggers.forEach((trig, i) => {
         trig.addEventListener("click", (e) => this.toggle(i));
       });
+      if (this.element.dataset.cdd === "open")
+        this.toggle(0);
     }
     toggle(i) {
       if (this.drops[i].style.display == "block") {
@@ -4709,6 +4711,7 @@
       this.trigger.forEach((trig, i) => {
         trig.onclick = (e) => this.toggle(i);
       });
+      this.toggle(0);
     }
     destroy() {
       this.trigger.forEach((trig) => trig.onclick = null);
@@ -4717,11 +4720,15 @@
       const item = this.items.filter(
         (item2) => item2.dataset.id === this.trigger[i].dataset.id
       )[0];
+      console.log(this.current);
       if (item.length < 1)
         return;
       this.items.forEach((it) => it.style.display = "none");
-      if (this.current !== i)
+      this.trigger.forEach((trig) => trig.classList.remove("active"));
+      if (this.current !== i) {
         item.style.display = "block";
+        this.trigger[i].classList.add("active");
+      }
       this.current = i;
     }
   };
@@ -5188,6 +5195,7 @@
       this.preview = new Preview();
     }
     create() {
+      console.log("test");
       if (this.wrap.querySelector("[data-dd='w']")) {
         this.dropdowns = [...this.wrap.querySelectorAll("[data-dd='w']")].map(
           (el) => new Dropdown({ element: el })

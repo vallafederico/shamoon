@@ -12,12 +12,16 @@ export class Services {
     this.trigger = [...unit.querySelectorAll("[data-serv='trig']")];
     this.items = [...unit.querySelectorAll("[data-serv='item']")];
     this.create();
+
+    // console.log("services", this.unit, this.trigger, this.items);
   }
 
   create() {
     this.trigger.forEach((trig, i) => {
       trig.onclick = (e) => this.toggle(i);
     });
+
+    this.toggle(0);
   }
 
   destroy() {
@@ -29,20 +33,19 @@ export class Services {
       (item) => item.dataset.id === this.trigger[i].dataset.id
     )[0];
 
+    console.log(this.current);
+
     if (item.length < 1) return;
 
     this.items.forEach((it) => (it.style.display = "none"));
 
-    if (this.current !== i) item.style.display = "block";
+    this.trigger.forEach((trig) => trig.classList.remove("active"));
+
+    if (this.current !== i) {
+      item.style.display = "block";
+      this.trigger[i].classList.add("active");
+    }
 
     this.current = i;
-
-    // if (item.style.display == "none" || item.style.display == "") {
-    //   item.style.display = "block";
-    // } else {
-    //   item.style.display = "none";
-    // }
-
-    // console.log(item);
   }
 }
