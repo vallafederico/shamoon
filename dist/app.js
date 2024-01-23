@@ -4397,11 +4397,18 @@
   var Clocks = class {
     current = 0;
     constructor() {
-      this.clocks = [...document.querySelectorAll("[data-svg='clock']")].map(
-        (el) => {
+      this.clocks = [
+        ...document.querySelectorAll("[data-svg='clock'], [data-lottie]")
+      ].map((el) => {
+        if (el.dataset.svg === "clock") {
           return new Clock(el);
+        } else {
+          return {
+            svg: el
+          };
         }
-      );
+      });
+      this.lottie = document.querySelector("[data-lottie]");
     }
     changeClock(i) {
       this.clocks[this.current].svg.style.display = "none";
@@ -4412,12 +4419,12 @@
   var Clock = class {
     constructor(el) {
       this.svg = el;
+      this.counter = el.dataset.direction === "counter" ? -1 : 1;
       this.hours = this.svg.querySelector("#hours");
       this.min = this.svg.querySelector("#min");
       this.texts = {
         date: document.querySelector("[data-clock='date']"),
-        time: document.querySelector("[data-clock='time']"),
-        loc: document.querySelector("[data-clock='loc']")
+        time: document.querySelector("[data-clock='time']")
       };
       this.hours.style.transformOrigin = "center";
       this.min.style.transformOrigin = "center";
@@ -4435,9 +4442,7 @@
         year: "numeric",
         month: "short",
         day: "numeric"
-        // timeZone: "America/New_York",
       };
-      this.texts.loc.textContent = "Location";
       const formattedDate = date.toLocaleDateString(void 0, options);
       this.animateText(formattedDate, hours, min);
       setInterval(() => {
@@ -4455,13 +4460,13 @@
       gsapWithCSS.to(this.hours, {
         duration: 0.5,
         transformOrigin: "bottom",
-        rotation: hours * 30 + min * 0.5,
+        rotation: (hours * 30 + min * 0.5) * this.counter,
         ease: "power2.out"
       });
       gsapWithCSS.to(this.min, {
         duration: 0.5,
         transformOrigin: "bottom",
-        rotation: min * 6,
+        rotation: min * 6 * this.counter,
         ease: "power2.out"
       });
     }
@@ -4622,6 +4627,8 @@
       this.bgWrap = document.querySelector("[data-bg='w']");
       this.bgTrigger = document.querySelector("[data-bg='trigger']");
       this.bgImgs = [...this.bgWrap.querySelectorAll("[data-bg]")];
+      this.closeImgs = this.bgWrap.querySelector("[data-bg='close']");
+      this.closeImgs.onclick = () => this.bgWrap.style.display = "none";
       this.bgTrigger.onclick = () => this.bgWrap.style.display = "flex";
       this.bgImgs.forEach((item, i) => {
         item.onclick = () => {

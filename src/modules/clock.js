@@ -9,11 +9,19 @@ export class Clocks {
   current = 0;
 
   constructor() {
-    this.clocks = [...document.querySelectorAll("[data-svg='clock']")].map(
-      (el) => {
+    this.clocks = [
+      ...document.querySelectorAll("[data-svg='clock'], [data-lottie]"),
+    ].map((el) => {
+      if (el.dataset.svg === "clock") {
         return new Clock(el);
+      } else {
+        return {
+          svg: el,
+        };
       }
-    );
+    });
+
+    this.lottie = document.querySelector("[data-lottie]");
   }
 
   changeClock(i) {
@@ -28,21 +36,19 @@ export class Clocks {
 export class Clock {
   constructor(el) {
     this.svg = el;
-    // console.log(this.svg);
+
+    this.counter = el.dataset.direction === "counter" ? -1 : 1;
+
     this.hours = this.svg.querySelector("#hours");
     this.min = this.svg.querySelector("#min");
-    // console.log(this.svg, this.hours, this.min);
 
     this.texts = {
       date: document.querySelector("[data-clock='date']"),
       time: document.querySelector("[data-clock='time']"),
-      loc: document.querySelector("[data-clock='loc']"),
     };
 
     this.hours.style.transformOrigin = "center";
     this.min.style.transformOrigin = "center";
-    // this.hours.style.transform = "rotate(270deg)";
-    // this.min.style.transform = "rotate(90deg)";
 
     this.setInitial();
   }
@@ -61,11 +67,7 @@ export class Clock {
       year: "numeric",
       month: "short",
       day: "numeric",
-      // timeZone: "America/New_York",
     };
-
-    // console.log(navigator.language); // en-US
-    this.texts.loc.textContent = "Location"; // initial set
 
     const formattedDate = date.toLocaleDateString(undefined, options);
     this.animateText(formattedDate, hours, min);
@@ -89,13 +91,13 @@ export class Clock {
     Tween.to(this.hours, {
       duration: 0.5,
       transformOrigin: "bottom",
-      rotation: hours * 30 + min * 0.5,
+      rotation: (hours * 30 + min * 0.5) * this.counter,
       ease: "power2.out",
     });
     Tween.to(this.min, {
       duration: 0.5,
       transformOrigin: "bottom",
-      rotation: min * 6,
+      rotation: min * 6 * this.counter,
       ease: "power2.out",
     });
   }

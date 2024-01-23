@@ -140,6 +140,8 @@ export class System {
     this.bgWrap = document.querySelector("[data-bg='w']");
     this.bgTrigger = document.querySelector("[data-bg='trigger']");
     this.bgImgs = [...this.bgWrap.querySelectorAll("[data-bg]")];
+    this.closeImgs = this.bgWrap.querySelector("[data-bg='close']");
+    this.closeImgs.onclick = () => (this.bgWrap.style.display = "none");
 
     this.bgTrigger.onclick = () => (this.bgWrap.style.display = "flex");
     this.bgImgs.forEach((item, i) => {
