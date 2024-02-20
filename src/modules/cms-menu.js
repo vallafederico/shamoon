@@ -15,6 +15,8 @@ export class CmsMenu {
 
     this.triggerWrapper = document.querySelector("[data-pmenu=trigger]");
     this.itemWrapper = document.querySelector("[data-pmenu=item]");
+
+    // this.toggle(0);
   }
 
   create() {
@@ -27,6 +29,7 @@ export class CmsMenu {
 
   /** Events */
   toggle(i) {
+    console.log("toggle", i);
     if (this.current === i) return;
 
     if (this.current !== null) {

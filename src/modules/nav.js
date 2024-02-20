@@ -8,6 +8,7 @@ export class Nav extends Cdd {
 
     this.links = [...this.element.querySelectorAll(".cdd-link")];
     // initial setup
+
     this.links.forEach((link, i) => {
       if (link.classList.contains("current")) link.classList.remove("current");
     });
@@ -22,8 +23,10 @@ export class Nav extends Cdd {
   }
 
   setCurrent(i) {
+    // console.log("set current");
     if (this.current !== null)
       this.links[this.current].classList.remove("current");
+
     this.current = i;
     this.links[this.current].classList.add("current");
   }

@@ -16,7 +16,13 @@ export class Cdd {
 
   create() {
     this.triggers.forEach((trig, i) => {
-      trig.addEventListener("click", (e) => this.toggle(i));
+      if (trig.dataset.mod === "open") {
+        this.toggle(i);
+      }
+
+      trig.addEventListener("click", (e) => {
+        this.toggle(i);
+      });
     });
 
     if (this.element.dataset.cdd === "open") this.toggle(0);

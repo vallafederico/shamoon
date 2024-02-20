@@ -48,7 +48,7 @@ export class Dom {
   }
 
   create() {
-    console.log("test");
+    // console.log("test");
     if (this.wrap.querySelector("[data-dd='w']")) {
       this.dropdowns = [...this.wrap.querySelectorAll("[data-dd='w']")].map(
         (el) => new Dropdown({ element: el })

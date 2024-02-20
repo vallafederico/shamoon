@@ -33,7 +33,7 @@ export class Services {
       (item) => item.dataset.id === this.trigger[i].dataset.id
     )[0];
 
-    console.log(this.current);
+    // console.log(this.current);
 
     if (item.length < 1) return;
 

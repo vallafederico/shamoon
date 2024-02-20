@@ -13,7 +13,10 @@ dependencies:
     version: 1.5.1
   gsap:
     specifier: npm:@gsap/shockingly@^3.12.2
-    version: /@gsap/shockingly@3.12.2
+    version: npm.greensock.com/@gsap/shockingly@3.12.2
+  tiny-emitter:
+    specifier: ^2.1.0
+    version: 2.1.0
 
 devDependencies:
   esbuild:
@@ -223,10 +226,6 @@ packages:
     dev: true
     optional: true
 
-  /@gsap/shockingly@3.12.2:
-    resolution: {integrity: sha512-kYmkwAQ53GzBxs+e8pu/BCzUMrfJoBSEE1JI5HB6wUGDt9yuR/XTwSNfRCBzbuzy/zR9HgqubZnU59LhOiOzwA==}
-    dev: false
-
   /@studio-freight/lenis@1.0.27:
     resolution: {integrity: sha512-1I6EaWR9rxdFjIJtF52CtETJt9ngfY4AjawrJY5pLxCvHa/lQZ+1v2gTUntwNZkuks6E2It6YEXV6jnpnCZFjA==}
     dev: false
@@ -284,4 +283,14 @@ packages:
 
   /selector-set@1.1.5:
     resolution: {integrity: sha512-6SQw6yMew5iOZ8/cDHDEnJWRM4ot2mxP6szZyF5ptrBogw4AcS4EXRj/8BUfgAMwVfdL84qpModlBMOl2NVrsQ==}
+    dev: false
+
+  /tiny-emitter@2.1.0:
+    resolution: {integrity: sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==}
+    dev: false
+
+  npm.greensock.com/@gsap/shockingly@3.12.2:
+    resolution: {integrity: sha512-kYmkwAQ53GzBxs+e8pu/BCzUMrfJoBSEE1JI5HB6wUGDt9yuR/XTwSNfRCBzbuzy/zR9HgqubZnU59LhOiOzwA==, tarball: https://npm.greensock.com/@gsap/shockingly/-/shockingly-3.12.2.tgz}
+    name: gsap
+    version: 3.12.2
     dev: false
