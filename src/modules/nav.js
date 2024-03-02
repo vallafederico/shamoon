@@ -13,6 +13,13 @@ export class Nav extends Cdd {
       if (link.classList.contains("current")) link.classList.remove("current");
     });
 
+    this.links.forEach((link, i) => {
+      if (window.location.href == link.href) {
+        this.setCurrent(i);
+      }
+    });
+
+    console.log("nav init");
     this.addEvents();
   }
 
